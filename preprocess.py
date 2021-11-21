@@ -35,6 +35,8 @@ def main():
         sent_tokens.append(sent_tokenize(review))
         word_tokens.append(word_tokenize(review))
 
+    # TODO: remove symbols from word_tokens
+    
     stop_words = set(stopwords.words('english'))
     filtered_word = []
     for i in range(len(sent_tokens)):
@@ -50,6 +52,16 @@ def main():
     lemmatized_word = []
     lemmatizer = nltk.WordNetLemmatizer()
     for i in range(len(stemmed_word)):
-        lemmatized_word.append([lemmatizer.lemmatize(w) for w in stemmed_word[i]]) 
+        lemmatized_word.append([lemmatizer.lemmatize(w) for w in stemmed_word[i]])
+    
+    # map each word to its frequency
+    word_freq = {}
+    for i in range(len(lemmatized_word)):
+        for word in lemmatized_word[i]:
+            if word in word_freq:
+                word_freq[word] += 1
+            else:
+                word_freq[word] = 1
+                    
 if __name__ == '__main__':
     main()
