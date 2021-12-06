@@ -4,6 +4,7 @@ import nltk
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
+import tensorflow as tf
 nltk.download('punkt')
 nltk.download('wordnet')
 nltk.download('stopwords')
@@ -62,6 +63,13 @@ def main():
                 word_freq[word] += 1
             else:
                 word_freq[word] = 1
+
+    # Tokenization
+    tokenizer = tf.keras.preprocess.text.Tokenizer(num_words = len(lemmatized_word))
+    tokenized_words = tokenizer.texts_to_sequences(lemmatized_word)
+
+    # Padding 
+    padded = tf.keras.preprocessing.sequence.pad_sequences(tokenized_words)
                     
 if __name__ == '__main__':
     main()
