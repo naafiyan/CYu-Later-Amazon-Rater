@@ -5,6 +5,8 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 import tensorflow as tf
+from tensorflow.keras.preprocessing.text import Tokenizer, text_to_word_sequence
+from tensorflow.keras.preprocessing.sequence import pad_sequences
 nltk.download('punkt')
 nltk.download('wordnet')
 nltk.download('stopwords')
@@ -17,7 +19,7 @@ def parse(path):
 
 def main():
     dict = {}
-    generator = parse('./data/reviews_Baby_5.json.gz')
+    generator = parse('../data/reviews_Baby_5.json.gz')
     i = 0
     for line in generator:
         dict[i] = line
@@ -65,11 +67,20 @@ def main():
                 word_freq[word] = 1
 
     # Tokenization
-    tokenizer = tf.keras.preprocess.text.Tokenizer(num_words = len(lemmatized_word))
+    num_words = len(lemmatized_word)
+    tokenizer = Tokenizer(num_words = num_words)
+    tokenizer.fit_on_texts(lemmatized_word)
+
     tokenized_words = tokenizer.texts_to_sequences(lemmatized_word)
 
+    print("Tokenized Words")
+    print(tokenized_words)
+
     # Padding 
-    padded = tf.keras.preprocessing.sequence.pad_sequences(tokenized_words)
+    padded = pad_sequences(tokenized_words)
+
+    print("Padded Words")
+    print(padded)
                     
 if __name__ == '__main__':
     main()
