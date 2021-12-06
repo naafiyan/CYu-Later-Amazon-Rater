@@ -49,12 +49,6 @@ def preprocess():
             classified_labels.append(1)
         else:
             classified_labels.append(0)
-    
-    # print("Classified labels")
-    # print(classified_labels)
-
-
-
     # TODO: remove symbols from word_tokens
     
     stop_words = set(stopwords.words('english'))
@@ -109,7 +103,6 @@ def preprocess():
 
     # Padding 
     padded = pad_sequences(tokenized_words)
-
 
     train_test_split = int(0.8*len(padded))
     train_padded = padded[:train_test_split]

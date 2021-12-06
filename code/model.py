@@ -12,6 +12,8 @@ class Model(tf.keras.Model):
 
         self.loss_list = []
 
+        self.batch_size = 128
+
     def call(self, texts):
         embed = self.embedding(texts)
         output = self.lstm(embed)

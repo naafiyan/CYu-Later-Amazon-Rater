@@ -2,14 +2,15 @@ from preprocess import preprocess
 from model import Model
 import tensorflow as tf
 from matplotlib import pyplot as plt
+from tqdm import tqdm
 
 
 def train(model, train_texts, train_labels):
     print("Model training...")
-    batch_size = 128
+    batch_size = model.batch_size
     epochs = 1
     # train for 10 epochs
-    for i in range(epochs):
+    for i in tqdm(range(epochs)):
         print("Num Examples: {}".format(len(train_texts)))
 
         for j in range(batch_size, len(train_texts), batch_size):
@@ -31,10 +32,27 @@ def train(model, train_texts, train_labels):
             print("Epoch: {}, Batch: {}, Loss: {}".format(i, int(j/batch_size), loss))
 
 def test(model, test_texts, test_labels):
-    # test model
-    probs = model.call(test_texts)
-    accuracy = model.accuracy(test_labels, probs)
-    print("Accuracy: {}".format(accuracy))
+    # testing model
+
+    # batch and get accuracy
+    batch_size = model.batch_size
+
+    acc = 0
+    for i in tqdm(range(batch_size, len(test_texts), batch_size)):
+        # get batch
+        batch_texts = test_texts[i-batch_size:i]
+        batch_labels = test_labels[i-batch_size:i]
+
+        # shuffle
+        indices = tf.range(len(batch_texts))
+        shuffled_indices = tf.random.shuffle(indices)
+        batch_texts = tf.gather(batch_texts, shuffled_indices)
+        batch_labels = tf.gather(batch_labels, shuffled_indices)
+
+        probs = model.call(batch_texts)
+        curr_accuracy = model.accuracy(batch_labels, probs)
+        acc += curr_accuracy        
+    print("Test Accuracy: {}".format(acc/len(test_texts)))
 
 def visualize_loss_batch(loss_list):
     """
