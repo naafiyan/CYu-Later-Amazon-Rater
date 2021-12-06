@@ -10,10 +10,10 @@ def train(model, train_texts, train_labels):
     batch_size = model.batch_size
     epochs = 1
     # train for 10 epochs
-    for i in tqdm(range(epochs)):
+    for i in range(epochs):
         print("Num Examples: {}".format(len(train_texts)))
 
-        for j in range(batch_size, len(train_texts), batch_size):
+        for j in tqdm(range(batch_size, len(train_texts), batch_size)):
             # get batch
             batch_texts = train_texts[j-batch_size:j]
             batch_labels = train_labels[j-batch_size:j]
@@ -38,6 +38,7 @@ def test(model, test_texts, test_labels):
     batch_size = model.batch_size
 
     acc = 0
+    steps = 0
     for i in tqdm(range(batch_size, len(test_texts), batch_size)):
         # get batch
         batch_texts = test_texts[i-batch_size:i]
@@ -50,9 +51,11 @@ def test(model, test_texts, test_labels):
         batch_labels = tf.gather(batch_labels, shuffled_indices)
 
         probs = model.call(batch_texts)
+        probs = tf.cast(probs, tf.int32)
         curr_accuracy = model.accuracy(batch_labels, probs)
-        acc += curr_accuracy        
-    print("Test Accuracy: {}".format(acc/len(test_texts)))
+        acc += curr_accuracy
+        steps += 1     
+    print("Test Accuracy: {}".format(acc/steps))
 
 def visualize_loss_batch(loss_list):
     """

@@ -19,7 +19,7 @@ def parse(path):
     yield json.loads(l)
 
 def preprocess():
-    num_examples = 10000
+    num_examples = 1000
 
     dict = {}
     generator = parse('../data/reviews_Baby_5.json.gz')
