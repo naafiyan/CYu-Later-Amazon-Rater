@@ -10,6 +10,8 @@ class Model(tf.keras.Model):
         # optimizer
         self.optimizer = tf.keras.optimizers.Adam(0.001)
 
+        self.loss_list = []
+
     def call(self, texts):
         embed = self.embedding(texts)
         output = self.lstm(embed)
@@ -20,8 +22,10 @@ class Model(tf.keras.Model):
         # might want to do sparse softmax cross entropy to get 3 types of sentiment
         labels = tf.reshape(labels, (-1, 1))
         preds = tf.reshape(predictions, (-1, 1))
-
-        return tf.reduce_mean(tf.keras.losses.binary_crossentropy(labels, preds))
+        loss = tf.reduce_mean(tf.keras.losses.binary_crossentropy(labels, preds))
+        # append loss to list so that we can visualize it
+        self.loss_list.append(loss)
+        return loss
 
     def accuracy(self, labels, predictions):
         # TODO: update to consider 3 different sentiment instead of binary
