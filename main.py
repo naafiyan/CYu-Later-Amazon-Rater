@@ -3,6 +3,7 @@ from model import Model
 import tensorflow as tf
 
 def train(model, train_texts, train_labels):
+    print("Model training...")
     batch_size = 128
     epochs = 1
     # train for 10 epochs
@@ -11,11 +12,12 @@ def train(model, train_texts, train_labels):
             # get batch
             batch_texts = train_texts[j-batch_size:j]
             batch_labels = train_labels[j-batch_size:j]
-            probs = model.call(batch_texts)
-            loss = model.loss(batch_labels, probs)
+            
             with tf.GradientTape() as tape:
-                gradients = tape.gradient(loss, model.trainable_variables)
-                model.optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+                probs = model.call(batch_texts)
+                loss = model.loss(batch_labels, probs)
+            gradients = tape.gradient(loss, model.trainable_variables)
+            model.optimizer.apply_gradients(zip(gradients, model.trainable_variables))
             print("Epoch: {}, Batch: {}, Loss: {}".format(i, j, loss))
 
 def test(model, test_texts, test_labels):
@@ -38,3 +40,5 @@ def main():
     
     # TODO: Visualize the data
 
+if __name__ == '__main__':
+    main()

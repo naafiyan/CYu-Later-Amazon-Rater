@@ -19,6 +19,8 @@ def parse(path):
     yield json.loads(l)
 
 def preprocess():
+    num_examples = 1000
+
     dict = {}
     generator = parse('../data/reviews_Baby_5.json.gz')
     i = 0
@@ -35,12 +37,12 @@ def preprocess():
     label_list = data["overall"]
     sent_tokens = []
     word_tokens = []
-    for review in review_list[0:10]:
+    for review in review_list[0:num_examples]:
         sent_tokens.append(sent_tokenize(review))
         word_tokens.append(word_tokenize(review))
 
     # Classify labels 
-    labels = label_list[0:10]
+    labels = label_list[0:num_examples]
     classified_labels = []
     for i in range(len(labels)):
         if(labels[i] > 2.5):
@@ -48,8 +50,8 @@ def preprocess():
         else:
             classified_labels.append(0)
     
-    print("Classified labels")
-    print(classified_labels)
+    # print("Classified labels")
+    # print(classified_labels)
 
 
 
@@ -72,7 +74,6 @@ def preprocess():
     for i in range(len(stemmed_word)):
         lemmatized_word.append([lemmatizer.lemmatize(w) for w in stemmed_word[i]])
     
-    print(lemmatized_word[0])
 
     # Normalize text (omit punctuation and non-ascii characters)
     NON_ALPHANUM = re.compile(r'[\W]')
@@ -89,8 +90,6 @@ def preprocess():
         
         normalized_word.append(new_review)
 
-    
-    print(normalized_word[0])
 
     # map each word to its frequency
     word_freq = {}
@@ -108,14 +107,9 @@ def preprocess():
 
     tokenized_words = tokenizer.texts_to_sequences(lemmatized_word)
 
-    print("Tokenized Words")
-    print(tokenized_words[0])
-
     # Padding 
     padded = pad_sequences(tokenized_words)
 
-    print("Padded Words")
-    print(padded[0])
 
     train_test_split = int(0.8*len(padded))
     train_padded = padded[:train_test_split]
@@ -125,6 +119,8 @@ def preprocess():
 
     MAX_LENGTH = max(len(x) for x in train_padded)
     MAX_FEATURES = 12000
+
+    print("Preprocessing finished")
 
     return train_padded, train_labels, test_padded, test_labels, MAX_LENGTH, MAX_FEATURES
 
