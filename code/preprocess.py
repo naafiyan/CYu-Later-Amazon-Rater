@@ -18,9 +18,7 @@ def parse(path):
   for l in g:
     yield json.loads(l)
 
-def preprocess(file_path):
-
-    num_examples = 1000
+def preprocess(file_path, num_examples):
 
     dict = {}
     generator = parse(file_path)

@@ -74,12 +74,14 @@ def main():
     # parse command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('file_name', type=str, help='File Name')
+    parser.add_argument('--num_examples', type=int, default=10000, help='Number of examples to use')
     parser.add_argument('--batch_size', type=int, default=128, help='Batch size')
     parser.add_argument('--epochs', type=int, default=10, help='Number of epochs')
     parser.add_argument('--lr', type=float, default=0.001, help='Learning rate')    
 
     args = parser.parse_args()
     file_name = args.file_name
+    num_examples = args.num_examples
     batch_size = args.batch_size
     epochs = args.epochs
     lr = args.lr
@@ -89,7 +91,7 @@ def main():
     if not exists(file_path):
         raise Exception("File does not exist")
     # get data from preprocess
-    preprocess_data = preprocess(file_path)
+    preprocess_data = preprocess(file_path, num_examples)
     train_texts, train_labels, test_texts, test_labels, max_length, max_features = preprocess_data
 
     model = Model(max_length, max_features, batch_size, lr)
