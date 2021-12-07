@@ -30,7 +30,7 @@ def train(model, train_texts, train_labels, epochs):
                 loss = model.loss(batch_labels, probs)
             gradients = tape.gradient(loss, model.trainable_variables)
             model.optimizer.apply_gradients(zip(gradients, model.trainable_variables))
-            print("Batch: {}, Loss: {}".format(i, int(j/batch_size), loss))
+            print("Batch: {}, Loss: {}".format(int(j/batch_size), loss))
 
 def test(model, test_texts, test_labels):
     # testing model
@@ -51,12 +51,27 @@ def test(model, test_texts, test_labels):
         batch_texts = tf.gather(batch_texts, shuffled_indices)
         batch_labels = tf.gather(batch_labels, shuffled_indices)
 
+        """
+        # TODO: Fix this
+        The issue here is that probabilities all get rounded up to 1
+        That could be an issue with softmax and maybe we should use sigmoid or ReLU instead
+        It could also be an issue with the loss function
+        Maybe we need to somehow use one_hot encoding for the labels
+
+        """
         probs = model.call(batch_texts)
+        # breakpoint()
+        # not sure if this rounding is needed?
+        probs = tf.round(probs)
+        # but if i dont round then all the values get truncated to 0 when we cast here
+        # but we need to cast for the accuracy function to work
+        # sigmoid is centred around 0.5 with range [0,1]
         probs = tf.cast(probs, tf.int32)
         curr_accuracy = model.accuracy(batch_labels, probs)
+        print("Accuracy: {}".format(curr_accuracy))
         acc += curr_accuracy
         steps += 1     
-    print("Test Accuracy: {}".format(acc/steps))
+    print("Test Accuracy: {}".format(acc/max(steps, 1)))
 
 def visualize_loss_batch(loss_list):
     """
@@ -69,8 +84,13 @@ def visualize_loss_batch(loss_list):
     plt.ylabel('Loss')
     plt.show()  
 
+def visualize_avg_loss_epoch(loss_list, batch_size):
+    """
+    Visualize the average loss per epoch using matplotlib to plot loss_list against epoch
+    """
+    pass
+
 def main():
-    
     # parse command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('file_name', type=str, help='File Name')
@@ -83,6 +103,9 @@ def main():
     file_name = args.file_name
     num_examples = args.num_examples
     batch_size = args.batch_size
+    # makes sure that we have a suitable batch size and number of examples
+    if batch_size > int(num_examples*0.2):
+        parser.error("Batch size cannot be greater than 20% of the number of examples")
     epochs = args.epochs
     lr = args.lr
 
@@ -101,6 +124,7 @@ def main():
     test(model, test_texts, test_labels)
     
     # TODO: Visualize the data
+    # TODO: this should visualize the loss per batch rather whole loss
     visualize_loss_batch(model.loss_list)
 
 if __name__ == '__main__':

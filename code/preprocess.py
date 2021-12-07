@@ -20,6 +20,8 @@ def parse(path):
 
 def preprocess(file_path, num_examples):
 
+    sentiment_threshold = 4.5
+
     dict = {}
     generator = parse(file_path)
     i = 0
@@ -44,7 +46,7 @@ def preprocess(file_path, num_examples):
     labels = label_list[0:num_examples]
     classified_labels = []
     for i in range(len(labels)):
-        if(labels[i] > 2.5):
+        if(labels[i] > sentiment_threshold):
             classified_labels.append(1)
         else:
             classified_labels.append(0)

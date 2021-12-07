@@ -5,7 +5,7 @@ class Model(tf.keras.Model):
         super(Model, self).__init__()
         self.embedding = tf.keras.layers.Embedding(max_features, 128)
         self.lstm = tf.keras.layers.LSTM(128, dropout=0.2, recurrent_dropout=0.2)
-        self.dense = tf.keras.layers.Dense(1, activation='softmax')
+        self.dense = tf.keras.layers.Dense(1, activation='sigmoid')
         
         # optimizer
         self.optimizer = tf.keras.optimizers.Adam(lr)
@@ -24,7 +24,7 @@ class Model(tf.keras.Model):
         # might want to do sparse softmax cross entropy to get 3 types of sentiment
         labels = tf.reshape(labels, (-1, 1))
         preds = tf.reshape(predictions, (-1, 1))
-        loss = tf.reduce_mean(tf.keras.losses.binary_crossentropy(labels, preds))
+        loss = tf.reduce_mean(tf.keras.losses.binary_crossentropy(labels, preds, from_logits=True))
         # append loss to list so that we can visualize it
         self.loss_list.append(loss)
         return loss
