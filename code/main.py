@@ -11,8 +11,8 @@ def train(model, train_texts, train_labels, epochs):
     print("Model training...")
     batch_size = model.batch_size
     # train for 10 epochs
+    print("Num Examples: {}".format(len(train_texts)))
     for i in range(epochs):
-        print("Num Examples: {}".format(len(train_texts)))
 
         for j in tqdm(range(batch_size, len(train_texts), batch_size), desc="Epoch {}".format(i)):
             # get batch
@@ -30,11 +30,11 @@ def train(model, train_texts, train_labels, epochs):
                 loss = model.loss(batch_labels, probs)
             gradients = tape.gradient(loss, model.trainable_variables)
             model.optimizer.apply_gradients(zip(gradients, model.trainable_variables))
-            print("Epoch: {}, Batch: {}, Loss: {}".format(i, int(j/batch_size), loss))
+            print("Batch: {}, Loss: {}".format(i, int(j/batch_size), loss))
 
 def test(model, test_texts, test_labels):
     # testing model
-
+    print("Testing model...")
     # batch and get accuracy
     batch_size = model.batch_size
 

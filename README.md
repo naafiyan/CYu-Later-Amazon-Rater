@@ -13,6 +13,7 @@ LEARNING_RATE = 0.001
 Note: file_name should not include .json.gz file extension
 
 ## File Structure
+```
 project/
 ├─ code/
 │  ├─ main.py
@@ -20,3 +21,4 @@ project/
 │  ├─ model.py
 data/
 ├─ <data_name>.json.gz
+```
