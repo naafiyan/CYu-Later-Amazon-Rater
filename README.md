@@ -1,7 +1,9 @@
 # CYu-Later-Amazon-Rater
 
 # Command Line Args
+```
 python3 file_name [--num_examples NUM_EXAMPLES] [--batch_size BATCH_SIZE] [--epochs NUM_EPOCHS] [--lr LEARNING_RATE]
+```
 
 Args in [] are optional
 Default values:
