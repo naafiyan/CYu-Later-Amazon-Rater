@@ -3,9 +3,9 @@ import tensorflow as tf
 class Model(tf.keras.Model):
     def __init__ (self, max_length, max_features, batch_size, lr):
         super(Model, self).__init__()
-      
+
         # using sequential
-        self.layers = tf.keras.layers.Sequential([
+        self.model_call = tf.keras.Sequential([
             tf.keras.layers.Embedding(max_features, 128, batch_input_shape=[batch_size, max_length]),
             tf.keras.layers.LSTM(128, dropout=0.2, recurrent_dropout=0.2, return_sequences=True),
             tf.keras.layers.LSTM(128, dropout=0.2, recurrent_dropout=0.2),
@@ -21,7 +21,7 @@ class Model(tf.keras.Model):
         self.batch_size = batch_size
 
     def call(self, texts):
-        return self.layers(texts)
+        return self.model_call(texts)
     
     def loss(self, labels, predictions):
         # might want to do sparse softmax cross entropy to get 3 types of sentiment
