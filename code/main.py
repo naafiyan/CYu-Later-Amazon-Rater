@@ -26,11 +26,11 @@ def train(model, train_texts, train_labels, epochs):
             batch_labels = tf.gather(batch_labels, shuffled_indices)
             
             with tf.GradientTape() as tape:
-                probs = model.call(batch_texts)
-                loss = model.loss(batch_labels, probs)
+                preds = model.call(batch_texts)
+                loss = model.loss(batch_labels, preds)
             gradients = tape.gradient(loss, model.trainable_variables)
             model.optimizer.apply_gradients(zip(gradients, model.trainable_variables))
-            print("Batch: {}, Loss: {}".format(int(j/batch_size), loss))
+            print("Batch: {}, Loss: {}".format(int(j/batch_size), tf.reduce_sum(loss)))
 
 def test(model, test_texts, test_labels):
     # testing model
@@ -98,6 +98,7 @@ def main():
     parser.add_argument('--batch_size', type=int, default=128, help='Batch size')
     parser.add_argument('--epochs', type=int, default=10, help='Number of epochs')
     parser.add_argument('--lr', type=float, default=0.001, help='Learning rate')    
+    parser.add_argument('--sentiment_threshold', type=float, default=3.5, help='Sentiment threshold')
 
     args = parser.parse_args()
     file_name = args.file_name
@@ -108,13 +109,14 @@ def main():
         parser.error("Batch size cannot be greater than 20% of the number of examples")
     epochs = args.epochs
     lr = args.lr
+    sentiment_threshold = args.sentiment_threshold
 
     # file_path
     file_path = "../data/{}.json.gz".format(file_name)
     if not exists(file_path):
         raise Exception("File does not exist")
     # get data from preprocess
-    preprocess_data = preprocess(file_path, num_examples)
+    preprocess_data = preprocess(file_path, num_examples, sentiment_threshold)
     train_texts, train_labels, test_texts, test_labels, max_length, max_features = preprocess_data
 
     model = Model(max_length, max_features, batch_size, lr)

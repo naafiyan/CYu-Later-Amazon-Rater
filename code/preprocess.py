@@ -18,10 +18,7 @@ def parse(path):
   for l in g:
     yield json.loads(l)
 
-def preprocess(file_path, num_examples):
-
-    sentiment_threshold = 4.5
-
+def preprocess(file_path, num_examples, sentiment_threshold):
     dict = {}
     generator = parse(file_path)
     i = 0
@@ -112,7 +109,7 @@ def preprocess(file_path, num_examples):
     test_labels = classified_labels[train_test_split:]
 
     MAX_LENGTH = max(len(x) for x in train_padded)
-    MAX_FEATURES = 12000
+    MAX_FEATURES = 20000
 
     print("Preprocessing finished")
 
