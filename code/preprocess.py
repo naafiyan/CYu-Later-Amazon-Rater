@@ -18,11 +18,12 @@ def parse(path):
   for l in g:
     yield json.loads(l)
 
-def preprocess():
+def preprocess(file_path):
+
     num_examples = 1000
 
     dict = {}
-    generator = parse('../data/reviews_Baby_5.json.gz')
+    generator = parse(file_path)
     i = 0
     for line in generator:
         dict[i] = line
