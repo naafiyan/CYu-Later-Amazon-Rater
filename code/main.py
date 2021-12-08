@@ -97,6 +97,7 @@ def main():
     parser.add_argument('--epochs', type=int, default=10, help='Number of epochs')
     parser.add_argument('--lr', type=float, default=0.001, help='Learning rate')    
     parser.add_argument('--sentiment_threshold', type=float, default=3.5, help='Sentiment threshold')
+    parser.add_argument('--load_weights', type=bool, default=False, help='Load weights')
 
     args = parser.parse_args()
     file_name = args.file_name
@@ -108,6 +109,7 @@ def main():
     epochs = args.epochs
     lr = args.lr
     sentiment_threshold = args.sentiment_threshold
+    load_weights = args.load_weights
 
     # file_path
     file_path = "../data/{}.json.gz".format(file_name)
@@ -118,6 +120,8 @@ def main():
     train_texts, train_labels, test_texts, test_labels, max_length, max_features = preprocess_data
 
     model = Model(max_length, max_features, batch_size, lr)
+    if load_weights:
+        model.load_weights("../models/{}_weights.h5".format(file_name))
 
     # train model
     train(model, train_texts, train_labels, epochs)
@@ -126,6 +130,7 @@ def main():
     # TODO: Visualize the data
     # TODO: this should visualize the loss per batch rather whole loss
     visualize_loss_batch(model.loss_list)
+    model.save_weights("../models/{}_weights.h5".format(file_name))
 
 if __name__ == '__main__':
     main()
