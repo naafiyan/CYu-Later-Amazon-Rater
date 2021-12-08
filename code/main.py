@@ -60,7 +60,6 @@ def test(model, test_texts, test_labels):
 
         """
         probs = model.call(batch_texts)
-        # breakpoint()
         # not sure if this rounding is needed?
         probs = tf.round(probs)
         # but if i dont round then all the values get truncated to 0 when we cast here
