@@ -58,8 +58,8 @@ def preprocess(file_path, num_examples, sentiment_threshold):
             classified_labels.append(1)
         else:
             classified_labels.append(0)
-    # TODO: remove symbols from word_tokens
     
+    # TODO: remove symbols from word_tokens
     stop_words = set(stopwords.words('english'))
     filtered_word = []
     for i in range(len(sent_tokens)):
@@ -135,7 +135,7 @@ def preprocess(file_path, num_examples, sentiment_threshold):
     test_labels = tf.gather(test_labels, shuffled_indices)
 
     print("Preprocessing finished")
-
+    
     return train_padded, train_labels, test_padded, test_labels, MAX_LENGTH, MAX_FEATURES
 
 def visualize_rating_frequency(labels):

@@ -119,6 +119,18 @@ def main():
     preprocess_data = preprocess(file_path, num_examples, sentiment_threshold)
     train_texts, train_labels, test_texts, test_labels, max_length, max_features = preprocess_data
 
+    one_count = 0
+    zero_count = 0
+    for item in train_labels:
+        if item == 1:
+            one_count+=1
+        else:
+            zero_count+=1
+    
+    print(one_count)
+    print(zero_count)
+    breakpoint()
+
     model = Model(max_length, max_features, batch_size, lr)
     if load_weights:
         model.load_weights("../models/{}_weights.h5".format(file_name))

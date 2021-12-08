@@ -8,3 +8,4 @@ numpy==1.19.3
 periodictable==1.5.1
 imageio==2.9.0
 nltk==3.6.5
+tqdm==4.62.3
