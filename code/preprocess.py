@@ -8,6 +8,8 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing.text import Tokenizer, text_to_word_sequence
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 import re 
+import matplotlib
+import matplotlib.pyplot as plt
 nltk.download('punkt')
 nltk.download('wordnet')
 nltk.download('stopwords')
@@ -47,6 +49,9 @@ def preprocess(file_path, num_examples, sentiment_threshold):
 
     # Classify labels 
     labels = label_list[0:num_examples]
+
+    visualize_rating_frequency(labels)
+
     classified_labels = []
     for i in range(len(labels)):
         if(labels[i] > sentiment_threshold):
@@ -133,4 +138,17 @@ def preprocess(file_path, num_examples, sentiment_threshold):
     
     return train_padded, train_labels, test_padded, test_labels, MAX_LENGTH, MAX_FEATURES
 
-                    
+def visualize_rating_frequency(labels):
+    ratings = {}
+
+    for label in labels:
+        if label not in ratings:
+            ratings[label] = 1
+
+        else:
+            ratings[label] = ratings[label] + 1
+ 
+    keys = ratings.keys()
+    values = ratings.values()
+ 
+    plt.bar(keys,values)

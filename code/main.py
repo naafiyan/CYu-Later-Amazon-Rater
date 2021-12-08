@@ -57,7 +57,6 @@ def test(model, test_texts, test_labels):
         That could be an issue with softmax and maybe we should use sigmoid or ReLU instead
         It could also be an issue with the loss function
         Maybe we need to somehow use one_hot encoding for the labels
-
         """
         probs = model.call(batch_texts)
         # not sure if this rounding is needed?
