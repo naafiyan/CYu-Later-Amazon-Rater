@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 nltk.download('punkt')
 nltk.download('wordnet')
 nltk.download('stopwords')
-
+# from wordcloud import WordCloud, STOPWORDS
 
 def parse(path):
   g = gzip.open(path, 'r')
@@ -50,7 +50,7 @@ def preprocess(file_path, num_examples, sentiment_threshold):
     # Classify labels 
     labels = label_list[0:num_examples]
 
-    visualize_rating_frequency(labels)
+    # visualize_rating_frequency(labels)
 
     classified_labels = []
     for i in range(len(labels)):
@@ -93,6 +93,7 @@ def preprocess(file_path, num_examples, sentiment_threshold):
         
         normalized_word.append(new_review)
 
+    visualize_word_cloud(lemmatized_word)
 
     # map each word to its frequency
     word_freq = {}
@@ -152,3 +153,13 @@ def visualize_rating_frequency(labels):
     values = ratings.values()
  
     plt.bar(keys,values)
+    plt.show()
+
+# def visualize_word_cloud(words):
+#     wordcloud = WordCloud(words, background_color="white", max_words=100, min_word_length=5).generate(text)
+
+#     fig=plt.figure(figsize=(15, 8))
+#     plt.imshow(wordcloud, interpolation='bilinear')
+#     plt.axis("off")
+#     plt.title('Total Reviews Word Clowd')
+#     plt.show()

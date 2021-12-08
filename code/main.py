@@ -1,5 +1,6 @@
 from preprocess import preprocess
 from model import Model
+from vader import VADER_M
 import tensorflow as tf
 from matplotlib import pyplot as plt
 from tqdm import tqdm
@@ -71,6 +72,9 @@ def test(model, test_texts, test_labels):
         steps += 1     
     print("Test Accuracy: {}".format(acc/max(steps, 1)))
 
+def VADER_test(test_texts, test_labels):
+    
+
 def visualize_loss_batch(loss_list):
     """
     Visualize the loss per batch using matplotlib to plot loss_list
@@ -131,7 +135,8 @@ def main():
     print(zero_count)
     breakpoint()
 
-    model = Model(max_length, max_features, batch_size, lr)
+    # model = Model(max_length, max_features, batch_size, lr)
+    model = Model
     if load_weights:
         model.load_weights("../models/{}_weights.h5".format(file_name))
 
