@@ -1,4 +1,5 @@
-from preprocess import preprocess
+from preprocess import preprocess, get_all_data
+from glove import glove_embed
 from model import Model
 import tensorflow as tf
 from matplotlib import pyplot as plt
@@ -98,6 +99,7 @@ def main():
     parser.add_argument('--lr', type=float, default=0.001, help='Learning rate')    
     parser.add_argument('--sentiment_threshold', type=float, default=3.5, help='Sentiment threshold')
     parser.add_argument('--load_weights', type=bool, default=False, help='Load weights')
+    parser.add_argument('--is_glove', type=bool, default=False, help='Use Glove')
 
     args = parser.parse_args()
     file_name = args.file_name
@@ -110,28 +112,20 @@ def main():
     lr = args.lr
     sentiment_threshold = args.sentiment_threshold
     load_weights = args.load_weights
+    is_glove = args.is_glove
 
     # file_path
     file_path = "../data/{}.json.gz".format(file_name)
     if not exists(file_path):
         raise Exception("File does not exist")
     # get data from preprocess
-    preprocess_data = preprocess(file_path, num_examples, sentiment_threshold)
+    review_list, labels_list = get_all_data(file_path)
+
+    # get data from preprocess
+    preprocess_data = preprocess(review_list, labels_list, num_examples, sentiment_threshold, is_glove)
     train_texts, train_labels, test_texts, test_labels, max_length, max_features = preprocess_data
 
-    one_count = 0
-    zero_count = 0
-    for item in train_labels:
-        if item == 1:
-            one_count+=1
-        else:
-            zero_count+=1
-    
-    print(one_count)
-    print(zero_count)
-    breakpoint()
-
-    model = Model(max_length, max_features, batch_size, lr)
+    model = Model(max_length, max_features, batch_size, lr, is_glove)
     if load_weights:
         model.load_weights("../models/{}_weights.h5".format(file_name))
 
