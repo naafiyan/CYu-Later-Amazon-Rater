@@ -32,26 +32,7 @@ class Model(tf.keras.Model):
         self.batch_size = batch_size
 
     def call(self, texts):
-        # breakpoint()
         texts = tf.cast(texts, tf.float32)
-        # if self.is_glove:
-        #     return self.model_call(texts)
-        # texts = self.embedding_layer(texts)
-        # # embedding layer
-        # if not self.is_glove:
-        #     embedding = self.embedding_layer(texts)
-        # # gru layer 1
-        # else:
-        #     embedding = texts
-        # breakpoint()
-        # gru_1 = self.gru_1(tf.cast(embedding, tf.int32))
-        # # gru layer 2
-        # gru_2 = self.gru_2(tf.cast(gru_1, tf.int32))
-        # # dense layer 1
-        # dense_1 = self.dense_1(gru_2)
-        # # dense layer 2
-        # dense_2 = self.dense_2(dense_1)
-        # return dense_2
         return self.model_call(texts)
     
     def loss(self, labels, predictions):

@@ -38,7 +38,7 @@ def get_all_data(path):
         data["overall"].append(dict[d]["overall"])
     review_list = data["reviewText"]
     label_list = data["overall"]
-    return review_list, label_list
+    return review_list, label_list    
 
 def classify_labels(labels, sentiment_threshold):
     classified_labels = []
