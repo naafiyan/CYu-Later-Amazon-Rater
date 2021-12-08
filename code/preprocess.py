@@ -171,3 +171,4 @@ def visualize_rating_frequency(labels):
     values = ratings.values()
  
     plt.bar(keys,values)
+    plt.show()
