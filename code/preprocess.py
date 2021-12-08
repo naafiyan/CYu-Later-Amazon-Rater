@@ -111,6 +111,18 @@ def preprocess(file_path, num_examples, sentiment_threshold):
     MAX_LENGTH = max(len(x) for x in train_padded)
     MAX_FEATURES = 20000
 
+    # shuffle train data
+    indices = tf.range(len(train_padded))
+    shuffled_indices = tf.random.shuffle(indices)
+    train_padded = tf.gather(train_padded, shuffled_indices)
+    train_labels = tf.gather(train_labels, shuffled_indices)
+
+    # shuffle test data
+    indices = tf.range(len(test_padded))
+    shuffled_indices = tf.random.shuffle(indices)
+    test_padded = tf.gather(test_padded, shuffled_indices)
+    test_labels = tf.gather(test_labels, shuffled_indices)
+
     print("Preprocessing finished")
 
     return train_padded, train_labels, test_padded, test_labels, MAX_LENGTH, MAX_FEATURES

@@ -7,11 +7,13 @@ class Model(tf.keras.Model):
         # using sequential
         self.model_call = tf.keras.Sequential([
             tf.keras.layers.Embedding(max_features, 128, batch_input_shape=[batch_size, max_length]),
-            tf.keras.layers.LSTM(128, dropout=0.2, recurrent_dropout=0.2, return_sequences=True),
+            # tf.keras.layers.LSTM(128, dropout=0.2, recurrent_dropout=0.2, return_sequences=True),
             tf.keras.layers.LSTM(128, dropout=0.2, recurrent_dropout=0.2),
-            tf.keras.layers.Dense(64, activation='relu'),
+            # tf.keras.layers.Dense(64, activation='relu'),
             tf.keras.layers.Dense(1, activation='sigmoid')
         ])
+
+        # model layers
 
         # optimizer
         self.optimizer = tf.keras.optimizers.Adam(lr)
