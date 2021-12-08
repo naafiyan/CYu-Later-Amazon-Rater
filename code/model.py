@@ -27,7 +27,7 @@ class Model(tf.keras.Model):
         # might want to do sparse softmax cross entropy to get 3 types of sentiment
         labels = tf.reshape(labels, (-1, 1))
         preds = tf.reshape(predictions, (-1, 1))
-        loss = tf.reduce_mean(tf.keras.losses.binary_crossentropy(labels, preds, from_logits=True))
+        loss = tf.reduce_mean(tf.keras.losses.binary_crossentropy(labels, preds, from_logits=False))
         # append loss to list so that we can visualize it
         self.loss_list.append(loss)
         return loss
