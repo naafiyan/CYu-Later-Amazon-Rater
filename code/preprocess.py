@@ -30,6 +30,13 @@ def preprocess(file_path, num_examples, sentiment_threshold):
     for d in dict:
         data["reviewText"].append(dict[d]["reviewText"])
         data["overall"].append(dict[d]["overall"])
+    
+    # shuffle data["reviewText"] and data["overall"]
+    indices = tf.range(len(data["reviewText"]))
+    shuffled_indices = tf.random.shuffle(indices)
+    data["reviewText"] = tf.gather(data["reviewText"], shuffled_indices)
+    data["overall"] = tf.gather(data["overall"], shuffled_indices)
+    
 
     review_list = data["reviewText"]
     label_list = data["overall"]
