@@ -126,6 +126,10 @@ def main():
     train_texts, train_labels, test_texts, test_labels, max_length, max_features = preprocess_data
 
     model = Model(max_length, max_features, batch_size, lr, is_glove)
+<<<<<<< HEAD
+=======
+
+>>>>>>> f0c9bb166b3519608c32cef2089fe7f05228c6f3
     if load_weights:
         model.load_weights("../models/{}_weights.h5".format(file_name))
 
