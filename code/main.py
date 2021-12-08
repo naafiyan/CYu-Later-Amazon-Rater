@@ -121,15 +121,12 @@ def main():
     # get data from preprocess
     review_list, labels_list = get_all_data(file_path)
 
-<<<<<<< HEAD
     # get data from preprocess
     preprocess_data = preprocess(review_list, labels_list, num_examples, sentiment_threshold, is_glove)
     train_texts, train_labels, test_texts, test_labels, max_length, max_features = preprocess_data
 
     model = Model(max_length, max_features, batch_size, lr, is_glove)
-=======
-    model = Model(max_length, max_features, batch_size, lr)
->>>>>>> 2c7e938e5b80da7cd02c6357bef6d51c4275aacb
+
     if load_weights:
         model.load_weights("../models/{}_weights.h5".format(file_name))
 
