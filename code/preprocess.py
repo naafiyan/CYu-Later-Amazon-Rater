@@ -18,9 +18,12 @@ def parse(path):
   for l in g:
     yield json.loads(l)
 
-def preprocess(file_path, num_examples, sentiment_threshold):
+def get_all_data(path):
+    """
+    Gets all the reviewText and Overall Sentiment from the json file
+    """
     dict = {}
-    generator = parse(file_path)
+    generator = parse(path)
     i = 0
     for line in generator:
         dict[i] = line
@@ -30,16 +33,12 @@ def preprocess(file_path, num_examples, sentiment_threshold):
     for d in dict:
         data["reviewText"].append(dict[d]["reviewText"])
         data["overall"].append(dict[d]["overall"])
-    
-    # shuffle data["reviewText"] and data["overall"]
-    indices = tf.range(len(data["reviewText"]))
-    shuffled_indices = tf.random.shuffle(indices)
-    data["reviewText"] = tf.gather(data["reviewText"], shuffled_indices)
-    data["overall"] = tf.gather(data["overall"], shuffled_indices)
-    
-
     review_list = data["reviewText"]
     label_list = data["overall"]
+    return review_list, label_list
+
+def preprocess(file_path, num_examples, sentiment_threshold):
+    review_list, label_list = get_all_data(file_path)
     sent_tokens = []
     word_tokens = []
     for review in review_list[0:num_examples]:
