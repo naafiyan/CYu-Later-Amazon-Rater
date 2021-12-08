@@ -73,7 +73,7 @@ def test(model, test_texts, test_labels):
     print("Test Accuracy: {}".format(acc/max(steps, 1)))
 
 def VADER_test(test_texts, test_labels):
-    
+
 
 def visualize_loss_batch(loss_list):
     """
