@@ -21,9 +21,12 @@ Note: file_name should not include .json.gz file extension
 ```
 project/
 ├─ code/
+│  ├─ glove.py
 │  ├─ main.py
+│  ├─ mode.py
 │  ├─ preprocess.py
-│  ├─ model.py
-data/
-├─ <data_name>.json.gz
+├─ data/
+│  ├─ <data set>.json.gz
+├─ models/
+│  ├─ <data set>.h5
 ```
