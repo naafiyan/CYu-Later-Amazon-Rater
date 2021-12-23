@@ -1,4 +1,6 @@
 # CYu-Later-Amazon-Rater
+[Devpost Submission](https://devpost.com/software/cyu-later-amazon-rater)
+[Final Report](https://docs.google.com/document/d/1YONKM_1sVW1mKcL3nkIq_mz-WqDJFp57tLytqVlCPVU/edit?usp=sharing)
 
 # Command Line Args
 ```
